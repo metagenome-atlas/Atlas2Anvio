@@ -1,8 +1,10 @@
 
 CONDAENV='envs'
+
 contigs_db="genomes/anvio/all_contigs.db"
 
 bam_file="genomes/alignments/{sample}.bam"
+SAMPLES = glob_wildcards(bam_file).sample
 
 localrules: anvio
 rule anvio:
