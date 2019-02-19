@@ -18,7 +18,7 @@ rule anvio:
 localrules: get_contigs
 rule get_contigs:
     input:
-        fasta_dir = directory("genomes/genomes")
+        fasta_dir = "genomes/genomes"
     output:
         fasta=temp("genomes/anvio/all_contigs.fasta")
     shell:
@@ -89,7 +89,20 @@ rule anvi_gen_contigs_database:
 #         """
 #             anvi-run-ncbi-cogs -c {input} -T {threads} |& tee {log}
 #         """
-
+localrules: create_bam_index
+rule create_bam_index:
+    input:
+        "{file}.bam"
+    output:
+        "{file}.bam.bai"
+    conda:
+        "%s/samtools.yaml" %CONDAENV
+    threads:
+        1
+    resources:
+        mem=1
+    shell:
+        "samtools index {input}"
 
 rule anvi_profile:
     input:
@@ -101,9 +114,9 @@ rule anvi_profile:
     params:
         outdir=lambda wc, output: os.path.dirname(output[0]),
     threads:
-        8
+        4
     resources:
-        mem=90
+        mem=250
     conda:
         "%s/anvio.yaml" %CONDAENV
     log:
