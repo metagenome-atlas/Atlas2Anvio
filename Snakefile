@@ -110,7 +110,7 @@ rule anvi_profile:
         bam=bam_file,
         bai=bam_file+".bai"
     output:
-        "genomes/anvio/sample_profiles/{sample}/PROFILE.db"
+        "genomes/anvio/profiles/{sample}/PROFILE.db"
     params:
         outdir=lambda wc, output: os.path.dirname(output[0]),
     threads:
@@ -123,7 +123,7 @@ rule anvi_profile:
         "logs/genomes/anvio/profile_{sample}.log"
     shell:
         """
-            rm -rf {params.outdir}   |& tee {log}      # outdir shouldn't exist bevore
+            rm -rf {params.outdir}   |& tee {log}      # outdir shouldn't exist before
             anvi-profile -i {input.bam} -c {input.db} -T {threads} \
             --output-dir {params.outdir} -S {wildcards.sample} \
             --skip-SNV-profiling |& tee {log}
@@ -134,7 +134,7 @@ rule anvi_merge:
         db=contigs_db,
         profiles= expand(rules.anvi_profile.output,sample=SAMPLES)
     output:
-        "genomes/anvio/PROFILE.db"
+        "genomes/anvio/profiles/merged/PROFILE.db"
     params:
         outdir=lambda wc, output: os.path.dirname(output[0]),
     threads:
@@ -179,16 +179,3 @@ rule anvi_import_binning_results:
 
 # anvi-interactive -p SAMPLES-MERGED/PROFILE.db -c contigs.db \
 # --export-svg FILE_NAME.svg
-
-#
-# rule create_bam_index:
-#     input:
-#         "{file}.bam"
-#     output:
-#         "{file}.bam.bai"
-#     conda:
-#         "%s/required_packages.yaml" % CONDAENV
-#     threads:
-#         1
-#     shell:
-#         "samtools index {input}"
