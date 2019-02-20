@@ -10,7 +10,7 @@ localrules: anvio
 rule anvio:
     input:
         "genomes/anvio/imported_clusters",
-        "genomes/anvio/PROFILE.db",
+        "genomes/anvio/profiles/merged/PROFILE.db",
         contigs_db
 
 
