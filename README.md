@@ -29,6 +29,12 @@ If you intend to modify and further develop this workflow, fork this repository.
 
 In any case, if you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this repository and, if available, its DOI (see above).
 
+You probably want to install anvio:
+
+```
+conda install anvio
+```
+
 ### Step 3: Execute workflow
 
 Run the snakemake of the extension in the same working dir as Atlas:
