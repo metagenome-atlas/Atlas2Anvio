@@ -15,6 +15,7 @@ rule anvio:
 
 
 
+
 localrules: get_contigs
 rule get_contigs:
     input:
@@ -177,5 +178,21 @@ rule anvi_import_binning_results:
             |& tee {log}
         """
 
-# anvi-interactive -p SAMPLES-MERGED/PROFILE.db -c contigs.db \
-# --export-svg FILE_NAME.svg
+
+rule interactive:
+    input:
+        profiles="genomes/anvio/profiles/merged/PROFILE.db",
+        contigs=contigs_db
+#    output:
+        #"genomes/anvio/anvio_plot.svg"
+    conda:
+        "%s/anvio.yaml" %CONDAENV
+    params:
+        name='genomes'
+    threads:
+        1
+    shell:
+        "anvi-interactive -p {input.profiles} "
+        " -c {input.contigs} "
+#        " --export-svg {output} "
+        " --collection-name {params.name} "

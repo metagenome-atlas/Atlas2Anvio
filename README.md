@@ -1,13 +1,14 @@
 # Snakemake workflow: Atlas2Anvio
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥5-brightgreen.svg)](https://snakemake.bitbucket.io)
-[![Build Status](https://travis-ci.org/snakemake-workflows/Atlas2Anvio.svg?branch=master)](https://travis-ci.org/snakemake-workflows/Atlas2Anvio)
+
+<!-- [![Build Status](https://travis-ci.org/snakemake-workflows/Atlas2Anvio.svg?branch=master)](https://travis-ci.org/snakemake-workflows/Atlas2Anvio) -->
+
+![scheme of workflow](Anvio_plot.png?raw=true)
+
 
 This snakemake script is an extension to [metagenome-atlas](https://github.com/metagenome-atlas/atlas).
 It allows the genomes predicted by Atlas and the coverages of them to be visualized and post processed in [Anvi'o](http://merenlab.org/software/anvio/).
-
-| **WARNING:** This extension is in development. And is not yet working properly as I have some problems with the Anvio commands. Contribution is welcome. |
-| --- |
 
 
 ## Authors
@@ -30,27 +31,16 @@ In any case, if you use this workflow in a paper, don't forget to give credits t
 
 ### Step 3: Execute workflow
 
-Run the snakemake of the extension in the same working dir with the `-d atlas_working_dir` parameter
+Run the snakemake of the extension in the same working dir as Atlas:
 
-
-Test your configuration by performing a dry-run via
-
-    snakemake -d atlas_working_dir -n
-
-Execute the workflow locally via
-
-    snakemake --cores $N -d atlas_working_dir
-
-using `$N` cores or run it in a cluster environment via
-
-    snakemake --cluster qsub --jobs 100 -d atlas_working_dir
-
-or
-
-    snakemake --drmaa --jobs 100 -d atlas_working_dir
+```
+  snakemake -d atlas_working_dir --cores $N
+```
 
 See the [Snakemake documentation](https://snakemake.readthedocs.io) for further details.
 
-## Testing
+## Step 4: launch the anvio interactive display
 
-Tests cases are in the subfolder `.test`. They should be executed via continuous integration with Travis CI.
+```
+  snakemake -d atlas_working_dir interactive
+```
